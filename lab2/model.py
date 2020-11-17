@@ -74,10 +74,9 @@ class Database:
             self.conn.rollback()
             return False
 
-    def getValues(self, Cargo):
-        from_range = Cargo.textEdit.toPlainText()
-        to_range = Cargo.textEdit_2.toPlainText()
-        checked = str(not Cargo.checkBox.checkState()==0).lower()
+    def getValues(self, Trip):
+        from_range = Trip.textEdit.toPlainText()
+        to_range = Trip.textEdit_2.toPlainText()
         req = "SELECT * FROM (SELECT * FROM (SELECT * FROM trip RIGHT JOIN ownership ON trip.tid = ownership.tid) AS result WHERE (start_time BETWEEN '{0}' AND '{1}')) AS result  INNER JOIN person ON result.pid = person.pid;".format(from_range, to_range)
         result = self.get_request(req)
         r_str = ""
@@ -86,9 +85,9 @@ class Database:
                 r_str += str(st) + "    "
             r_str += "\n"
         for word in self.colnames:
-            Cargo.columns += word + "\t"
-        Cargo.columns += '\n'
-        Cargo.plainTextEdit.setPlainText(Cargo.columns + r_str)
+            Trip.columns += word + "\t"
+        Trip.columns += '\n'
+        Trip.plainTextEdit.setPlainText(Trip.columns + r_str)
 
     def update_request(self, table, text):
         property = text.split('\n')
